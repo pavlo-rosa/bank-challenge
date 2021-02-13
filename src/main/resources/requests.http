@@ -3,16 +3,16 @@
 #######################################################################
 
 ### Retrieve All Beneficiaries
-GET http://localhost:8080/beneficiaries
+GET http://localhost:8080/api/beneficiaries
 
 ### Retrieve One Beneficiary
-GET http://localhost:8080/beneficiaries/1
+GET http://localhost:8080/api/beneficiaries/1
 
 ### Delete Beneficiary
-DELETE http://localhost:8080/beneficiaries/4
+DELETE http://localhost:8080/api/beneficiaries/4
 
 ### Create Beneficiary
-POST http://localhost:8080/beneficiaries
+POST http://localhost:8080/api/beneficiaries
 Content-Type: application/json
 
 {

@@ -1,6 +1,8 @@
 package com.prosa.rivertech.rest.bankservices.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -11,6 +13,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "account")
+//@JsonIgnoreProperties(value = {"transferencesEmitted", "transferencesReceived", "transactions","createdDate", "updatedDate"})
+@JsonFilter("AccountFilter")
 public class Account  extends Auditable {
 
     @Id
@@ -18,7 +22,7 @@ public class Account  extends Auditable {
     private Long id;
 
     //TODO: Create some kind of generator and constraint
-    @Column(name = "iban")
+    @Column(name = "iban", length = 24, nullable = false)
     private String iban;
 
     //TODO: Pin 4 digits
@@ -26,7 +30,7 @@ public class Account  extends Auditable {
     private String password;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     private Beneficiary owner;
 
     @Column(name = "balance")

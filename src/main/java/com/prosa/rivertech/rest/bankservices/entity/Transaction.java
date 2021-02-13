@@ -1,5 +1,7 @@
 package com.prosa.rivertech.rest.bankservices.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -9,11 +11,11 @@ import java.util.Date;
 
 @Entity
 @Table(name = "transaction")
-public class Transaction {
+public class Transaction  extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToOne
     private Operation operation;
@@ -29,14 +31,6 @@ public class Transaction {
 
     @ManyToOne
     private Transference transference;
-
-    @CreatedDate
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT NOW() NOT NULL")
-    private Date createdDate;
-
-    @LastModifiedDate
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT NOW() NOT NULL")
-    private Date updatedDate;
 
     public Transaction() {
     }
@@ -97,19 +91,4 @@ public class Transaction {
         this.transference = transference;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
-    }
 }

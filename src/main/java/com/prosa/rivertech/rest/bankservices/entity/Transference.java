@@ -10,11 +10,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "transference")
-public class Transference {
+public class Transference  extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToOne
     private Account sourceAccount;
@@ -30,14 +30,6 @@ public class Transference {
 
     @OneToMany(mappedBy = "transference", cascade = CascadeType.ALL)
     private List<Transaction> transactions;
-
-    @CreatedDate
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT NOW() NOT NULL")
-    private Date createdDate;
-
-    @LastModifiedDate
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT NOW() NOT NULL")
-    private Date updatedDate;
 
     public Transference() {
     }
@@ -107,19 +99,4 @@ public class Transference {
         this.amount = amount;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
-    }
 }

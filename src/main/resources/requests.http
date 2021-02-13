@@ -1,0 +1,20 @@
+#######################################################################
+##################         CRUD  - BENEFICIARY      ###################
+#######################################################################
+
+### Retrieve All Beneficiaries
+GET http://localhost:8080/beneficiaries
+
+### Retrieve One Beneficiary
+GET http://localhost:8080/beneficiaries/1
+
+### Delete Beneficiary
+DELETE http://localhost:8080/beneficiaries/4
+
+### Create Beneficiary
+POST http://localhost:8080/beneficiaries
+Content-Type: application/json
+
+{
+  "name": "Cersei"
+}

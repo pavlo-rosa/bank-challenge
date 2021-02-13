@@ -1,5 +1,6 @@
 package com.prosa.rivertech.rest.bankservices.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -10,11 +11,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "account")
-public class Account {
+public class Account  extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     //TODO: Create some kind of generator and constraint
     @Column(name = "iban")
@@ -24,25 +25,21 @@ public class Account {
     @Column(name = "password")
     private String password;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Beneficiary owner;
 
     @Column(name = "balance")
     private BigDecimal balance;
 
-    @OneToMany(mappedBy = "sourceAccount")
+    @OneToMany(mappedBy = "sourceAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Transference> transferencesEmitted;
 
-    @OneToMany(mappedBy = "destinationAccount")
+    @OneToMany(mappedBy = "destinationAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Transference> transferencesReceived;
 
-    @CreatedDate
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT NOW() NOT NULL")
-    private Date createdDate;
-
-    @LastModifiedDate
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT NOW() NOT NULL")
-    private Date updatedDate;
+    @OneToMany(mappedBy = "destinationAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Transaction> transactions;
 
     public Account() {
     }
@@ -65,11 +62,11 @@ public class Account {
                 '}';
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -88,7 +85,7 @@ public class Account {
     public void setPassword(String password) {
         this.password = password;
     }
-
+//    @JsonBackReference
     public Beneficiary getOwner() {
         return owner;
     }
@@ -111,22 +108,6 @@ public class Account {
 
     public void setTransferencesEmitted(List<Transference> transferencesEmitted) {
         this.transferencesEmitted = transferencesEmitted;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
     }
 
     public List<Transference> getTransferencesReceived() {

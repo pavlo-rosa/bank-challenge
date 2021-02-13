@@ -1,14 +1,10 @@
 package com.prosa.rivertech.rest.bankservices.entity;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "operation")
-public class Operation {
+public class Operation  extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,14 +12,6 @@ public class Operation {
 
     @Column(name = "name")
     private String name;
-
-    @CreatedDate
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT NOW() NOT NULL")
-    private Date createdDate;
-
-    @LastModifiedDate
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT NOW() NOT NULL")
-    private Date updatedDate;
 
     public Operation() {
     }
@@ -56,19 +44,4 @@ public class Operation {
         this.name = name;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
-    }
 }

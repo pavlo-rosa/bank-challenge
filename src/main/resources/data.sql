@@ -12,6 +12,8 @@ INSERT INTO beneficiary(name)
 VALUES ('Sansa');
 INSERT INTO beneficiary(name)
 VALUES ('Tyrion');
+INSERT INTO beneficiary(name)
+VALUES ('Hodor');
 
 INSERT INTO account(balance, iban, password, owner_id)
 VALUES (0, 'ES6621000418401234560000', '1234', 1);

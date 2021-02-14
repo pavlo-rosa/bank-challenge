@@ -39,6 +39,16 @@ public class AccountController {
         return filterResponse.getMappingJacksonValue(account, filterResponse.AccountFilter, filterResponse.AccountFilterMapping);
     }
 
+
+    @GetMapping("/beneficiaries/{beneficiary_id}/accounts")
+    public MappingJacksonValue retrieveAccountsByBeneficiary(@PathVariable Long beneficiary_id) {
+        Beneficiary beneficiary = beneficiaryService.findById(beneficiary_id);
+        if(beneficiary == null){
+            return null;
+        }
+        return filterResponse.getMappingJacksonValue(beneficiary.getAccounts(), filterResponse.AccountFilter, filterResponse.AccountFilterMapping);
+    }
+
     @PostMapping("/beneficiaries/{beneficiary_id}/accounts")
     public MappingJacksonValue addAccount(@PathVariable Long beneficiary_id, @RequestBody Account account) {
 

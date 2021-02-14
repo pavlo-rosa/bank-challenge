@@ -115,4 +115,12 @@ public class Account  extends Auditable {
     public void setTransferencesReceived(List<Transference> transferencesReceived) {
         this.transferencesReceived = transferencesReceived;
     }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
 }

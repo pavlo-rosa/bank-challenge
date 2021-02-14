@@ -12,6 +12,9 @@ public class FilterResponse {
     public final String AccountFilter = "AccountFilter";
     public final String[] AccountFilterMapping= new String[]{"id", "number", "balance", "owner"};
 
+    public final String TransactionFilter = "TransactionFilter";
+    public final String[] TransactionFilterMapping= new String[]{"id", "operation", "amount", "balance"};
+
 
     public MappingJacksonValue getMappingJacksonValue(Object response, String filterName, String[] fieldsToExpose ) {
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept(fieldsToExpose);

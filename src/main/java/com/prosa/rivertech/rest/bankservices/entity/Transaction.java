@@ -1,5 +1,6 @@
 package com.prosa.rivertech.rest.bankservices.entity;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
@@ -11,6 +12,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "transaction")
+@JsonFilter("TransactionFilter")
 public class Transaction  extends Auditable {
 
     @Id

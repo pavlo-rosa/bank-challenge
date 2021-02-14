@@ -1,9 +1,13 @@
 package com.prosa.rivertech.rest.bankservices.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "operation")
+@JsonIgnoreProperties(value = {"createdDate", "updatedDate"})
 public class Operation  extends Auditable {
 
     @Id

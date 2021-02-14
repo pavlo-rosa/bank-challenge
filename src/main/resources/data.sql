@@ -50,15 +50,15 @@ INSERT INTO beneficiary(name)
 VALUES ('Hodor');
 
 INSERT INTO account(balance, password, owner_id)
-VALUES (0, '1234', 1);
+VALUES (0, '$2a$10$yss7nSBgNR4ExQrK8/lIrOm1kObWguXmUHa64ZQEzb89E8QxJg7ou', 1);
 INSERT INTO account(balance, password, owner_id)
-VALUES (2000, '1234', 2);
+VALUES (2000, '$2a$10$yss7nSBgNR4ExQrK8/lIrOm1kObWguXmUHa64ZQEzb89E8QxJg7ou', 2);
 INSERT INTO account(balance, password, owner_id)
-VALUES (10000, '1234', 3);
+VALUES (10000, '$2a$10$yss7nSBgNR4ExQrK8/lIrOm1kObWguXmUHa64ZQEzb89E8QxJg7ou', 3);
 INSERT INTO account(balance, password, owner_id)
-VALUES (30000, '1234', 4);
+VALUES (30000, '$2a$10$yss7nSBgNR4ExQrK8/lIrOm1kObWguXmUHa64ZQEzb89E8QxJg7ou', 4);
 INSERT INTO account(balance, password, owner_id)
-VALUES (120000, '1234', 4);
+VALUES (120000, '$2a$10$yss7nSBgNR4ExQrK8/lIrOm1kObWguXmUHa64ZQEzb89E8QxJg7ou', 4);
 
 INSERT INTO operation(name)
 VALUES ('deposit');

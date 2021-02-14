@@ -5,7 +5,9 @@ import com.prosa.rivertech.rest.bankservices.entity.Account;
 import com.prosa.rivertech.rest.bankservices.repository.AccountRepository;
 import com.prosa.rivertech.rest.bankservices.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import sun.security.util.Password;
 
 import java.security.SecureRandom;
 import java.sql.Timestamp;
@@ -50,6 +52,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account save(Account account) {
+        String encodedPassword= new BCryptPasswordEncoder().encode(account.getPassword());
+        account.setPassword(encodedPassword);
         return accountRepository.save(account);
     }
 

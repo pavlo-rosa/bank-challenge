@@ -7,8 +7,9 @@ import com.prosa.rivertech.rest.bankservices.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.security.SecureRandom;
+import java.sql.Timestamp;
+import java.util.*;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -22,6 +23,16 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<Account> findAll() {
+
+//        Random generator = new Random(System.currentTimeMillis());
+//        System.out.println(generator.nextLong() % 1000000000000L);
+        try{
+            UUID uuid = UUID.randomUUID();
+            String uuidAsString = uuid.toString();
+
+            System.out.println("Your UUID is: " + uuidAsString);
+        }catch(Exception e){e.printStackTrace();}
+
         return accountRepository.findAll();
     }
 
@@ -31,8 +42,8 @@ public class AccountServiceImpl implements AccountService {
         Account account = null;
         if (result.isPresent()) {
             account = result.get();
-        }else{
-            throw new RuntimeException("Did not find account id: "+ id);
+        } else {
+            throw new RuntimeException("Did not find account id: " + id);
         }
         return account;
     }

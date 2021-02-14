@@ -1,19 +1,14 @@
 package com.prosa.rivertech.rest.bankservices.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "account")
-//@JsonIgnoreProperties(value = {"transferencesEmitted", "transferencesReceived", "transactions","createdDate", "updatedDate"})
 @JsonFilter("AccountFilter")
 public class Account  extends Auditable {
 
@@ -22,8 +17,13 @@ public class Account  extends Auditable {
     private Long id;
 
     //TODO: Create some kind of generator and constraint
-    @Column(name = "iban", length = 24, nullable = false)
-    private String iban;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "number", unique = true)
+    private String number;
 
     //TODO: Pin 4 digits
     @Column(name = "password")
@@ -48,8 +48,8 @@ public class Account  extends Auditable {
     public Account() {
     }
 
-    public Account(String iban, String password, Beneficiary owner, BigDecimal balance) {
-        this.iban = iban;
+    public Account(String number, String password, Beneficiary owner, BigDecimal balance) {
+        this.number = number;
         this.password = password;
         this.owner = owner;
         this.balance = balance;
@@ -59,7 +59,7 @@ public class Account  extends Auditable {
     public String toString() {
         return "Account{" +
                 "id=" + id +
-                ", iban='" + iban + '\'' +
+                ", number='" + number + '\'' +
                 ", password='" + password + '\'' +
                 ", owner=" + owner +
                 ", balance=" + balance +
@@ -74,12 +74,12 @@ public class Account  extends Auditable {
         this.id = id;
     }
 
-    public String getIban() {
-        return iban;
+    public String getNumber() {
+        return number;
     }
 
-    public void setIban(String iban) {
-        this.iban = iban;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public String getPassword() {
@@ -89,7 +89,7 @@ public class Account  extends Auditable {
     public void setPassword(String password) {
         this.password = password;
     }
-//    @JsonBackReference
+
     public Beneficiary getOwner() {
         return owner;
     }

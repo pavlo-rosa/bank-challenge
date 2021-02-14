@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class FilterResponse {
 
     public final String AccountFilter = "AccountFilter";
-    public final String[] AccountFilterMapping= new String[]{"id", "iban", "balance", "owner"};
+    public final String[] AccountFilterMapping= new String[]{"id", "number", "balance", "owner"};
 
 
     public MappingJacksonValue getMappingJacksonValue(Object response, String filterName, String[] fieldsToExpose ) {

@@ -2,6 +2,7 @@ package com.prosa.rivertech.rest.bankservices.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.prosa.rivertech.rest.bankservices.dto.EnumOperationType;
 
 import javax.persistence.*;
 

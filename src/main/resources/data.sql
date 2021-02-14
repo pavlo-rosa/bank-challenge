@@ -50,7 +50,7 @@ INSERT INTO beneficiary(name)
 VALUES ('Hodor');
 
 INSERT INTO account(balance, password, owner_id)
-VALUES (0, '$2a$10$yss7nSBgNR4ExQrK8/lIrOm1kObWguXmUHa64ZQEzb89E8QxJg7ou', 1);
+VALUES (510, '$2a$10$yss7nSBgNR4ExQrK8/lIrOm1kObWguXmUHa64ZQEzb89E8QxJg7ou', 1);
 INSERT INTO account(balance, password, owner_id)
 VALUES (2000, '$2a$10$yss7nSBgNR4ExQrK8/lIrOm1kObWguXmUHa64ZQEzb89E8QxJg7ou', 2);
 INSERT INTO account(balance, password, owner_id)
@@ -67,26 +67,26 @@ VALUES ('withdraw');
 INSERT INTO operation(name)
 VALUES ('transfer');
 
-
-INSERT INTO transference (amount, destination_account_id, operation_id,
-                          source_account_id)
-VALUES (500.00, 1, 3, 4);
-
-
-INSERT INTO transaction (amount, balance, destination_account_id, operation_id,
-                         transference_id)
-VALUES (10.00, 10.00, 1, 1, null);
-INSERT INTO transaction (amount, balance, destination_account_id, operation_id,
-                         transference_id)
-VALUES (1000.00, 1000.00, 2, 1, null);
-INSERT INTO transaction (amount, balance, destination_account_id, operation_id,
-                         transference_id)
-VALUES (-10000.00, 0.00, 3, 2, null);
-INSERT INTO transaction (amount, balance, destination_account_id, operation_id,
-                         transference_id)
-VALUES (-500.00, 29500.00, 4, 3, 1);
-INSERT INTO transaction (amount, balance, destination_account_id, operation_id,
-                         transference_id)
-VALUES (500.00, 510.00, 1, 3, 1);
-
-
+--
+-- INSERT INTO transference (amount, destination_account_id, operation_id,
+--                           source_account_id)
+-- VALUES (500.00, 1, 3, 4);
+--
+--
+-- INSERT INTO transaction (amount, balance, destination_account_id, operation_id,
+--                          transference_id)
+-- VALUES (10.00, 10.00, 1, 1, null);
+-- INSERT INTO transaction (amount, balance, destination_account_id, operation_id,
+--                          transference_id)
+-- VALUES (1000.00, 1000.00, 2, 1, null);
+-- INSERT INTO transaction (amount, balance, destination_account_id, operation_id,
+--                          transference_id)
+-- VALUES (-10000.00, 0.00, 3, 2, null);
+-- INSERT INTO transaction (amount, balance, destination_account_id, operation_id,
+--                          transference_id)
+-- VALUES (-500.00, 29500.00, 4, 3, 1);
+-- INSERT INTO transaction (amount, balance, destination_account_id, operation_id,
+--                          transference_id)
+-- VALUES (500.00, 510.00, 1, 3, 1);
+--
+--

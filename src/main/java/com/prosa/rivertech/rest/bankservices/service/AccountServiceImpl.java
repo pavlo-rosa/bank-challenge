@@ -25,16 +25,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<Account> findAll() {
-
-//        Random generator = new Random(System.currentTimeMillis());
-//        System.out.println(generator.nextLong() % 1000000000000L);
-        try{
-            UUID uuid = UUID.randomUUID();
-            String uuidAsString = uuid.toString();
-
-            System.out.println("Your UUID is: " + uuidAsString);
-        }catch(Exception e){e.printStackTrace();}
-
         return accountRepository.findAll();
     }
 

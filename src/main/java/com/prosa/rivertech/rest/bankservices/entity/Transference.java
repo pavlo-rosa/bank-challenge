@@ -1,5 +1,6 @@
 package com.prosa.rivertech.rest.bankservices.entity;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "transference")
+@JsonFilter("TransferenceFilter")
 public class Transference  extends Auditable {
 
     @Id
@@ -67,11 +69,11 @@ public class Transference  extends Auditable {
         this.operation = operation;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

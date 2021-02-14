@@ -93,4 +93,15 @@ public class Transaction  extends Auditable {
         this.transference = transference;
     }
 
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                ", operation=" + operation +
+                ", destinationAccount=" + destinationAccount +
+                ", amount=" + amount +
+                ", balance=" + balance +
+                ", transference=" + transference +
+                '}';
+    }
 }

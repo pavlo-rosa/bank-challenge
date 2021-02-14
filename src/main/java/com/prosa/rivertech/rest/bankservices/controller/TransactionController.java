@@ -1,8 +1,11 @@
 package com.prosa.rivertech.rest.bankservices.controller;
 
+import com.prosa.rivertech.rest.bankservices.dto.TransactionBasicOperationRequest;
+import com.prosa.rivertech.rest.bankservices.dto.TransferenceOperationRequest;
 import com.prosa.rivertech.rest.bankservices.entity.Account;
 import com.prosa.rivertech.rest.bankservices.entity.Beneficiary;
 import com.prosa.rivertech.rest.bankservices.entity.Transaction;
+import com.prosa.rivertech.rest.bankservices.entity.Transference;
 import com.prosa.rivertech.rest.bankservices.service.AccountService;
 import com.prosa.rivertech.rest.bankservices.service.BeneficiaryService;
 import com.prosa.rivertech.rest.bankservices.service.TransactionService;
@@ -31,8 +34,30 @@ public class TransactionController {
 
     @GetMapping("/beneficiaries/{beneficiaryId}/accounts/{accountId}/transactions")
     public MappingJacksonValue retrieveAllTransactionsByAccount(@PathVariable Long beneficiaryId, @PathVariable Long accountId) {
-        List<Transaction> accountTransactions =  transactionService.findAllByAccountId(accountId);
+        List<Transaction> accountTransactions = transactionService.findAllByAccountId(accountId);
         return filterResponse.getMappingJacksonValue(accountTransactions, filterResponse.TransactionFilter, filterResponse.TransactionFilterMapping);
+    }
+
+    //TODO: AMOUNT ALWAYS POSITIVE
+    @PostMapping("/beneficiaries/{beneficiaryId}/accounts/{accountId}/transactions/deposits")
+    public MappingJacksonValue createDeposit(@PathVariable Long beneficiaryId, @PathVariable Long accountId, @RequestBody TransactionBasicOperationRequest body) {
+        Transaction newTransaction = transactionService.addDeposit(beneficiaryId, accountId, body.getAmount());
+        return filterResponse.getMappingJacksonValue(newTransaction, filterResponse.TransactionFilter, filterResponse.TransactionFilterMapping);
+    }
+
+    //TODO: AMOUNT ALWAYS NEGATIVE
+    @PostMapping("/beneficiaries/{beneficiaryId}/accounts/{accountId}/transactions/withdrawals")
+    public MappingJacksonValue createWithdrawal(@PathVariable Long beneficiaryId, @PathVariable Long accountId, @RequestBody TransactionBasicOperationRequest body) {
+        Transaction newTransaction = transactionService.addWithdrawal(beneficiaryId, accountId, body.getAmount());
+        return filterResponse.getMappingJacksonValue(newTransaction, filterResponse.TransactionFilter, filterResponse.TransactionFilterMapping);
+
+    }
+
+    //TODO: AMOUNT ALWAYS POSITIVE
+    @PostMapping("/beneficiaries/{beneficiaryId}/accounts/{accountId}/transactions/transferences")
+    public MappingJacksonValue createTransference(@PathVariable Long beneficiaryId,  @PathVariable Long accountId, @RequestBody TransferenceOperationRequest body) {
+        Transference newTransference = transactionService.addTransference(beneficiaryId, accountId, body.getDestination(), body.getAmount());
+        return filterResponse.getMappingJacksonValue(newTransference, filterResponse.TransferenceFilter, filterResponse.TransferenceFilterMapping);
     }
 
 }

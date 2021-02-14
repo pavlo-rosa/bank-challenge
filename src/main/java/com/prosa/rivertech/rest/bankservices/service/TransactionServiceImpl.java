@@ -68,8 +68,8 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transference newTransference = new Transference(sourceAccount, destinationAccount, amount, operation);
         newTransference = transferenceRepository.save(newTransference);
-//        createTransaction(sourceAccount, amount.negate(), operation, newTransference);
-//        createTransaction(destinationAccount, amount, operation, newTransference);
+        createTransaction(sourceAccount, amount.negate(), operation, newTransference);
+        createTransaction(destinationAccount, amount, operation, newTransference);
         return newTransference;
     }
 

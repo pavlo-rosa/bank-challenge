@@ -5,20 +5,16 @@ import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class TransferenceOperationRequest implements Serializable {
-
-    @NotNull(message = "Destination must not be null")
-    private Long destination;
+public class TransactionDepositOperationRequest implements Serializable {
 
     @NotNull(message = "Amount must not be null")
     @Positive(message = "Amount must be greater than 0")
     private BigDecimal amount;
 
-    public TransferenceOperationRequest() {
+    public TransactionDepositOperationRequest() {
     }
 
-    public TransferenceOperationRequest(Long destination, BigDecimal amount) {
-        this.destination = destination;
+    public TransactionDepositOperationRequest(BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -28,13 +24,5 @@ public class TransferenceOperationRequest implements Serializable {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
-    }
-
-    public Long getDestination() {
-        return destination;
-    }
-
-    public void setDestination(Long destination) {
-        this.destination = destination;
     }
 }

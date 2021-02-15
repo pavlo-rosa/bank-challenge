@@ -10,10 +10,10 @@ public interface TransactionService {
 
     public List<Transaction> findAllByAccountId(Long accountId);
 
-    public Transaction addDeposit(Long accountId, BigDecimal amount);
+    public Transaction addDeposit(Long accountId, BigDecimal amount, String authorization);
 
-    public Transaction addWithdrawal(Long accountId, BigDecimal amount);
+    public Transaction addWithdrawal(Long accountId, BigDecimal amount, String authorization);
 
-    public Transference addTransference(Long sourceAccountId, Long destinationAccountId, BigDecimal amount);
+    public Transference addTransference(Long sourceAccountId, Long destinationAccountId, BigDecimal amount, String authorization);
 
 }

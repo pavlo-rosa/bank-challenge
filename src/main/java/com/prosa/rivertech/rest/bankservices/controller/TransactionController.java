@@ -29,31 +29,31 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @GetMapping("/users/{userId}/accounts/{accountId}/transactions")
-    public MappingJacksonValue retrieveAllTransactionsByAccount(@PathVariable Long userId, @PathVariable Long accountId) {
+    @GetMapping("/accounts/{accountId}/transactions")
+    public MappingJacksonValue retrieveAllTransactionsByAccount(@PathVariable Long accountId) {
         List<Transaction> accountTransactions = transactionService.findAllByAccountId(accountId);
         return filterResponse.getMappingJacksonValue(accountTransactions, filterResponse.TransactionFilter, filterResponse.TransactionFilterMapping);
     }
 
     //TODO: AMOUNT ALWAYS POSITIVE
-    @PostMapping("/users/{userId}/accounts/{accountId}/transactions/deposits")
-    public MappingJacksonValue createDeposit(@PathVariable Long userId, @PathVariable Long accountId, @RequestBody TransactionBasicOperationRequest body) {
-        Transaction newTransaction = transactionService.addDeposit(userId, accountId, body.getAmount());
+    @PostMapping("/accounts/{accountId}/transactions/deposits")
+    public MappingJacksonValue createDeposit(@PathVariable Long accountId, @RequestBody TransactionBasicOperationRequest body) {
+        Transaction newTransaction = transactionService.addDeposit(accountId, body.getAmount());
         return filterResponse.getMappingJacksonValue(newTransaction, filterResponse.TransactionFilter, filterResponse.TransactionFilterMapping);
     }
 
     //TODO: AMOUNT ALWAYS NEGATIVE
-    @PostMapping("/users/{userId}/accounts/{accountId}/transactions/withdrawals")
-    public MappingJacksonValue createWithdrawal(@PathVariable Long userId, @PathVariable Long accountId, @RequestBody TransactionBasicOperationRequest body) {
-        Transaction newTransaction = transactionService.addWithdrawal(userId, accountId, body.getAmount());
+    @PostMapping("/accounts/{accountId}/transactions/withdrawals")
+    public MappingJacksonValue createWithdrawal(@PathVariable Long accountId, @RequestBody TransactionBasicOperationRequest body) {
+        Transaction newTransaction = transactionService.addWithdrawal(accountId, body.getAmount());
         return filterResponse.getMappingJacksonValue(newTransaction, filterResponse.TransactionFilter, filterResponse.TransactionFilterMapping);
 
     }
 
     //TODO: AMOUNT ALWAYS POSITIVE
-    @PostMapping("/users/{userId}/accounts/{accountId}/transactions/transferences")
-    public MappingJacksonValue createTransference(@PathVariable Long userId,  @PathVariable Long accountId, @RequestBody TransferenceOperationRequest body) {
-        Transference newTransference = transactionService.addTransference(userId, accountId, body.getDestination(), body.getAmount());
+    @PostMapping("/accounts/{accountId}/transactions/transferences")
+    public MappingJacksonValue createTransference(@PathVariable Long accountId, @RequestBody TransferenceOperationRequest body) {
+        Transference newTransference = transactionService.addTransference(accountId, body.getDestination(), body.getAmount());
         return filterResponse.getMappingJacksonValue(newTransference, filterResponse.TransferenceFilter, filterResponse.TransferenceFilterMapping);
     }
 

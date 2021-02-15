@@ -1,7 +1,6 @@
 package com.prosa.rivertech.rest.bankservices.service;
 
 import com.prosa.rivertech.rest.bankservices.entity.Account;
-import com.prosa.rivertech.rest.bankservices.entity.Beneficiary;
 
 import java.util.List;
 

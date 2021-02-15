@@ -1,7 +1,6 @@
 package com.prosa.rivertech.rest.bankservices.entity;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -25,7 +24,7 @@ public class Account  extends Auditable {
 
 
     @ManyToOne()
-    private Beneficiary owner;
+    private User owner;
 
     @Column(name = "balance")
     private BigDecimal balance;
@@ -42,7 +41,7 @@ public class Account  extends Auditable {
     public Account() {
     }
 
-    public Account(String number, String password, Beneficiary owner, BigDecimal balance) {
+    public Account(String number, String password, User owner, BigDecimal balance) {
         this.number = number;
         this.password = password;
         this.owner = owner;
@@ -84,11 +83,11 @@ public class Account  extends Auditable {
         this.password = password;
     }
 
-    public Beneficiary getOwner() {
+    public User getOwner() {
         return owner;
     }
 
-    public void setOwner(Beneficiary owner) {
+    public void setOwner(User owner) {
         this.owner = owner;
     }
 

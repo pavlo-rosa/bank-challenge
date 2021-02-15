@@ -38,15 +38,15 @@ CREATE TRIGGER generate_account_number_trigger
     FOR EACH ROW
 EXECUTE PROCEDURE generate_account_number();
 
-INSERT INTO beneficiary(name)
+INSERT INTO "user"(name)
 VALUES ('Jon');
-INSERT INTO beneficiary(name)
+INSERT INTO "user"(name)
 VALUES ('Daenerys');
-INSERT INTO beneficiary(name)
+INSERT INTO "user"(name)
 VALUES ('Sansa');
-INSERT INTO beneficiary(name)
+INSERT INTO "user"(name)
 VALUES ('Tyrion');
-INSERT INTO beneficiary(name)
+INSERT INTO "user"(name)
 VALUES ('Hodor');
 
 INSERT INTO account(balance, password, owner_id)

@@ -1,9 +1,9 @@
 package com.prosa.rivertech.rest.bankservices.controller;
 
 import com.prosa.rivertech.rest.bankservices.entity.Account;
-import com.prosa.rivertech.rest.bankservices.entity.Beneficiary;
+import com.prosa.rivertech.rest.bankservices.entity.User;
 import com.prosa.rivertech.rest.bankservices.service.AccountService;
-import com.prosa.rivertech.rest.bankservices.service.BeneficiaryService;
+import com.prosa.rivertech.rest.bankservices.service.UserService;
 import com.prosa.rivertech.rest.bankservices.utils.FilterResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -15,13 +15,13 @@ import java.util.Optional;
 @RestController
 public class AccountController {
     private final AccountService accountService;
-    private final BeneficiaryService beneficiaryService;
+    private final UserService userService;
     private final FilterResponse filterResponse;
 
     @Autowired
-    public AccountController(AccountService accountService, BeneficiaryService beneficiaryService,  FilterResponse filterResponse) {
+    public AccountController(AccountService accountService, UserService userService, FilterResponse filterResponse) {
         this.accountService = accountService;
-        this.beneficiaryService = beneficiaryService;
+        this.userService = userService;
         this.filterResponse = filterResponse;
     }
 
@@ -40,36 +40,36 @@ public class AccountController {
     }
 
 
-    @GetMapping("/beneficiaries/{beneficiary_id}/accounts")
-    public MappingJacksonValue retrieveAccountsByBeneficiary(@PathVariable Long beneficiary_id) {
-        Beneficiary beneficiary = beneficiaryService.findById(beneficiary_id);
-        if(beneficiary == null){
+    @GetMapping("/users/{userId}/accounts")
+    public MappingJacksonValue retrieveAccountsByUser(@PathVariable Long userId) {
+        User user = userService.findById(userId);
+        if(user == null){
             return null;
         }
-        return filterResponse.getMappingJacksonValue(beneficiary.getAccounts(), filterResponse.AccountFilter, filterResponse.AccountFilterMapping);
+        return filterResponse.getMappingJacksonValue(user.getAccounts(), filterResponse.AccountFilter, filterResponse.AccountFilterMapping);
     }
 
-    @PostMapping("/beneficiaries/{beneficiary_id}/accounts")
-    public MappingJacksonValue addAccount(@PathVariable Long beneficiary_id, @RequestBody Account account) {
+    @PostMapping("/users/{userId}/accounts")
+    public MappingJacksonValue addAccount(@PathVariable Long userId, @RequestBody Account account) {
 
-        Optional<Beneficiary> beneficiaryOptional = Optional.ofNullable(beneficiaryService.findById(beneficiary_id));
-        if (!beneficiaryOptional.isPresent()) {
-            throw new RuntimeException("Account not found id: " + beneficiary_id);
+        Optional<User> userOptional = Optional.ofNullable(userService.findById(userId));
+        if (!userOptional.isPresent()) {
+            throw new RuntimeException("Account not found id: " + userId);
         }
-        Beneficiary beneficiary = beneficiaryOptional.get();
-        account.setOwner(beneficiary);
+        User user = userOptional.get();
+        account.setOwner(user);
         Account newAccount = accountService.save(account);
         return filterResponse.getMappingJacksonValue(newAccount, filterResponse.AccountFilter, filterResponse.AccountFilterMapping);
     }
 
-    @PutMapping("/beneficiaries/{beneficiary_id}/accounts")
-    public MappingJacksonValue updateAccount(@PathVariable Long beneficiary_id, @RequestBody Account account) {
-        Optional<Beneficiary> beneficiaryOptional = Optional.ofNullable(beneficiaryService.findById(beneficiary_id));
-        if (!beneficiaryOptional.isPresent()) {
-            throw new RuntimeException("Beneficiary not found id: " + beneficiary_id);
+    @PutMapping("/users/{userId}/accounts")
+    public MappingJacksonValue updateAccount(@PathVariable Long userId, @RequestBody Account account) {
+        Optional<User> userOptional = Optional.ofNullable(userService.findById(userId));
+        if (!userOptional.isPresent()) {
+            throw new RuntimeException("User not found id: " + userId);
         }
-        Beneficiary beneficiary = beneficiaryOptional.get();
-        account.setOwner(beneficiary);
+        User user = userOptional.get();
+        account.setOwner(user);
         Account newAccount = accountService.save(account);
         return filterResponse.getMappingJacksonValue(newAccount, filterResponse.AccountFilter, filterResponse.AccountFilterMapping);
     }

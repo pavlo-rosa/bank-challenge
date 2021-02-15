@@ -5,9 +5,9 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "beneficiary")
+@Table(name = "\"user\"")
 @JsonIgnoreProperties(value = {"accounts", "createdDate", "updatedDate"})
-public class Beneficiary extends Auditable {
+public class User extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,16 +21,16 @@ public class Beneficiary extends Auditable {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Account> accounts;
 
-    public Beneficiary() {
+    public User() {
     }
 
-    public Beneficiary(String name) {
+    public User(String name) {
         this.name = name;
     }
 
     @Override
     public String toString() {
-        return "Beneficiary{" +
+        return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

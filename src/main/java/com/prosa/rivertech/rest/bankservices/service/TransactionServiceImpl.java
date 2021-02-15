@@ -44,7 +44,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Transactional
     @Override
-    public Transaction addDeposit(Long beneficiaryId, Long accountId, BigDecimal amount) {
+    public Transaction addDeposit(Long userId, Long accountId, BigDecimal amount) {
         Operation operation = operationService.findById(EnumOperationType.DEPOSIT.getId());
         Account account = accountService.findById(accountId);
 
@@ -53,7 +53,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Transactional
     @Override
-    public Transaction addWithdrawal(Long beneficiaryId, Long accountId, BigDecimal amount) {
+    public Transaction addWithdrawal(Long userId, Long accountId, BigDecimal amount) {
         Operation operation = operationService.findById(EnumOperationType.WITHDRAW.getId());
         Account account = accountService.findById(accountId);
         return createTransaction(account, amount, operation, null);
@@ -61,7 +61,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Transactional
     @Override
-    public Transference addTransference(Long beneficiaryId, Long sourceAccountId, Long destinationAccountId, BigDecimal amount) {
+    public Transference addTransference(Long userId, Long sourceAccountId, Long destinationAccountId, BigDecimal amount) {
         Operation operation = operationService.findById(EnumOperationType.TRANSFER.getId());
         Account sourceAccount = accountService.findById(sourceAccountId);
         Account destinationAccount = accountService.findById(destinationAccountId);

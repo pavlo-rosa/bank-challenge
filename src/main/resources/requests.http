@@ -1,18 +1,18 @@
 #######################################################################
-##################         CRUD  - BENEFICIARY      ###################
+##################         CRUD  - USER      ###################
 #######################################################################
 
-### Retrieve All Beneficiaries
-GET http://localhost:8080/api/beneficiaries
+### Retrieve All Users
+GET http://localhost:8080/api/users
 
-### Retrieve One Beneficiary
-GET http://localhost:8080/api/beneficiaries/1
+### Retrieve One User
+GET http://localhost:8080/api/users/1
 
-### Delete Beneficiary
-DELETE http://localhost:8080/api/beneficiaries/4
+### Delete User
+DELETE http://localhost:8080/api/users/4
 
-### Create Beneficiary
-POST http://localhost:8080/api/beneficiaries
+### Create User
+POST http://localhost:8080/api/users
 Content-Type: application/json
 
 {

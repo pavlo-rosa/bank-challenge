@@ -1,6 +1,7 @@
 package com.prosa.rivertech.rest.bankservices.service;
 
 import com.prosa.rivertech.rest.bankservices.entity.Operation;
+import com.prosa.rivertech.rest.bankservices.exception.NotFoundException;
 import com.prosa.rivertech.rest.bankservices.repository.OperationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class OperationServiceImpl implements OperationService {
     public Operation findById(int id) {
         Optional<Operation> result = operationRepository.findById(id);
         if (!result.isPresent()) {
-            throw new RuntimeException("Did not find Operation id: " + id);
+            throw new NotFoundException("User id not found - " + id);
         }
         return result.get();
     }

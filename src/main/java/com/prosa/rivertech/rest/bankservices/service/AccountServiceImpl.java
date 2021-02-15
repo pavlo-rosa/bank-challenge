@@ -2,6 +2,7 @@ package com.prosa.rivertech.rest.bankservices.service;
 
 import com.prosa.rivertech.rest.bankservices.entity.Account;
 import com.prosa.rivertech.rest.bankservices.entity.Account;
+import com.prosa.rivertech.rest.bankservices.exception.NotFoundException;
 import com.prosa.rivertech.rest.bankservices.repository.AccountRepository;
 import com.prosa.rivertech.rest.bankservices.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,20 +36,24 @@ public class AccountServiceImpl implements AccountService {
         if (result.isPresent()) {
             account = result.get();
         } else {
-            throw new RuntimeException("Did not find account id: " + id);
+            throw new NotFoundException("Account id not found - " + id);
         }
         return account;
     }
 
     @Override
     public Account save(Account account) {
-        String encodedPassword= new BCryptPasswordEncoder().encode(account.getPassword());
+        String encodedPassword = new BCryptPasswordEncoder().encode(account.getPassword());
         account.setPassword(encodedPassword);
         return accountRepository.save(account);
     }
 
     @Override
     public void delete(Long id) {
-        accountRepository.deleteById(id);
+        Account account = this.findById(id);
+        if (account != null) {
+            accountRepository.deleteById(id);
+        }
+
     }
 }

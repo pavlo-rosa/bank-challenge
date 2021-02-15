@@ -32,7 +32,6 @@ public class AccountController {
     }
 
 
-
     @GetMapping("/accounts/{id}")
     public MappingJacksonValue retrieveAccountById(@PathVariable long id) {
         Account account = accountService.findById(id);
@@ -43,20 +42,12 @@ public class AccountController {
     @GetMapping("/users/{userId}/accounts")
     public MappingJacksonValue retrieveAccountsByUser(@PathVariable Long userId) {
         User user = userService.findById(userId);
-        if(user == null){
-            return null;
-        }
         return filterResponse.getMappingJacksonValue(user.getAccounts(), filterResponse.AccountFilter, filterResponse.AccountFilterMapping);
     }
 
     @PostMapping("/users/{userId}/accounts")
     public MappingJacksonValue addAccount(@PathVariable Long userId, @RequestBody Account account) {
-
-        Optional<User> userOptional = Optional.ofNullable(userService.findById(userId));
-        if (!userOptional.isPresent()) {
-            throw new RuntimeException("Account not found id: " + userId);
-        }
-        User user = userOptional.get();
+        User user = userService.findById(userId);
         account.setOwner(user);
         Account newAccount = accountService.save(account);
         return filterResponse.getMappingJacksonValue(newAccount, filterResponse.AccountFilter, filterResponse.AccountFilterMapping);
@@ -64,11 +55,7 @@ public class AccountController {
 
     @PutMapping("/users/{userId}/accounts")
     public MappingJacksonValue updateAccount(@PathVariable Long userId, @RequestBody Account account) {
-        Optional<User> userOptional = Optional.ofNullable(userService.findById(userId));
-        if (!userOptional.isPresent()) {
-            throw new RuntimeException("User not found id: " + userId);
-        }
-        User user = userOptional.get();
+        User user = userService.findById(userId);
         account.setOwner(user);
         Account newAccount = accountService.save(account);
         return filterResponse.getMappingJacksonValue(newAccount, filterResponse.AccountFilter, filterResponse.AccountFilterMapping);
@@ -76,10 +63,6 @@ public class AccountController {
 
     @DeleteMapping("/accounts/{id}")
     public String deleteAccount(@PathVariable Long id) {
-        Account account = accountService.findById(id);
-        if (account == null) {
-            throw new RuntimeException("Account is not found: " + id);
-        }
         accountService.delete(id);
         return "Deleted account id: " + id;
     }

@@ -33,12 +33,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<Transaction> findAllByAccountId(Long accountId) {
-        Optional<Account> accountOptional = Optional.ofNullable(accountService.findById(accountId));
-        if (!accountOptional.isPresent()) {
-            throw new RuntimeException("Account not found id: " + accountId);
-        }
-        Account account = accountOptional.get();
-        System.out.println(account.getTransactions());
+        Account account = accountService.findById(accountId);
         return account.getTransactions();
     }
 
@@ -47,7 +42,6 @@ public class TransactionServiceImpl implements TransactionService {
     public Transaction addDeposit(Long accountId, BigDecimal amount) {
         Operation operation = operationService.findById(EnumOperationType.DEPOSIT.getId());
         Account account = accountService.findById(accountId);
-
         return createTransaction(account, amount, operation, null);
     }
 

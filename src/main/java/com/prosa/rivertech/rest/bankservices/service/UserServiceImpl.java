@@ -1,5 +1,6 @@
 package com.prosa.rivertech.rest.bankservices.service;
 
+import com.prosa.rivertech.rest.bankservices.exception.NotFoundException;
 import com.prosa.rivertech.rest.bankservices.repository.UserRepository;
 import com.prosa.rivertech.rest.bankservices.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,8 @@ public class UserServiceImpl implements UserService {
         User user = null;
         if (result.isPresent()) {
             user = result.get();
-        }else{
-            throw new RuntimeException("Did not find user id: "+ id);
+        } else {
+            throw new NotFoundException("User id not found - " + id);
         }
         return user;
     }
@@ -43,6 +44,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
-        userRepository.deleteById(id);
+        User user = this.findById(id);
+        if (user != null) {
+            userRepository.deleteById(id);
+        }
     }
 }

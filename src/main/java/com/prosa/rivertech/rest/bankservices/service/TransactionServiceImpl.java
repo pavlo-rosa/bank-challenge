@@ -45,11 +45,6 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Transaction addDeposit(Long accountId, BigDecimal amount, String authorization) {
         Account account = accountService.findById(accountId);
-        boolean authorized = authorizationManager.validateUser(authorization, account);
-        if (!authorized) {
-            throw new UnauthorizedException("Unauthorized operation");
-        }
-        
         Operation operation = operationService.findById(EnumOperationType.DEPOSIT.getId());
         return createTransaction(account, amount, operation, null);
     }

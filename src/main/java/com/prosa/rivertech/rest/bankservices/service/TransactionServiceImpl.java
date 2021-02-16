@@ -44,36 +44,46 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     @Override
     public Transaction addDeposit(Long accountId, BigDecimal amount, String authorization) {
-        Operation operation = operationService.findById(EnumOperationType.DEPOSIT.getId());
         Account account = accountService.findById(accountId);
         boolean authorized = authorizationManager.validateUser(authorization, account);
         if (!authorized) {
             throw new UnauthorizedException("Unauthorized operation");
         }
+        
+        Operation operation = operationService.findById(EnumOperationType.DEPOSIT.getId());
         return createTransaction(account, amount, operation, null);
     }
 
     @Transactional
     @Override
     public Transaction addWithdrawal(Long accountId, BigDecimal amount, String authorization) {
-        Operation operation = operationService.findById(EnumOperationType.WITHDRAW.getId());
         Account account = accountService.findById(accountId);
         boolean authorized = authorizationManager.validateUser(authorization, account);
         if (!authorized) {
-            throw new UnauthorizedException("Account number or Password invalid.");
+            throw new UnauthorizedException("Account number or Password invalid");
         }
+        BigDecimal newPossibleBalance = amount.add(account.getBalance());
+        if (newPossibleBalance.compareTo(BigDecimal.ZERO) < 0) {
+            throw new UnauthorizedException("Insufficient balance");
+        }
+
+        Operation operation = operationService.findById(EnumOperationType.WITHDRAW.getId());
         return createTransaction(account, amount, operation, null);
     }
 
     @Transactional
     @Override
     public Transference addTransference(Long sourceAccountId, Long destinationAccountId, BigDecimal amount, String authorization) {
-        Operation operation = operationService.findById(EnumOperationType.TRANSFER.getId());
         Account sourceAccount = accountService.findById(sourceAccountId);
         boolean authorized = authorizationManager.validateUser(authorization, sourceAccount);
         if (!authorized) {
             throw new UnauthorizedException("Unauthorized operation");
         }
+        if (sourceAccount.getBalance().compareTo(amount) < 0) {
+            throw new UnauthorizedException("Insufficient balance");
+        }
+
+        Operation operation = operationService.findById(EnumOperationType.TRANSFER.getId());
         Account destinationAccount = accountService.findById(destinationAccountId);
         Transference newTransference = new Transference(sourceAccount, destinationAccount, amount, operation);
         newTransference = transferenceRepository.save(newTransference);
@@ -83,15 +93,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     private Transaction createTransaction(Account account, BigDecimal amount, Operation operation, Transference transference) {
-
         BigDecimal newBalance = account.getBalance().add(amount);
         Transaction newTransaction = new Transaction(operation, account, amount, newBalance, transference);
-        //TODO: Verify
-//        List<Transaction> accountTransactions = account.getTransactions();
-//        accountTransactions.add(newTransaction);
-//        account.setTransactions(accountTransactions);
-//        account.setBalance(newBalance);
-//        accountService.save(account);
         newTransaction.getDestinationAccount().setBalance(newBalance);
         transactionRepository.save(newTransaction);
         return newTransaction;

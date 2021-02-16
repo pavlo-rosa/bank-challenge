@@ -1,5 +1,6 @@
 package com.prosa.rivertech.rest.bankservices.service;
 
+import com.prosa.rivertech.rest.bankservices.exception.BadRequestException;
 import com.prosa.rivertech.rest.bankservices.exception.NotFoundException;
 import com.prosa.rivertech.rest.bankservices.repository.UserRepository;
 import com.prosa.rivertech.rest.bankservices.entity.User;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalLong;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -39,7 +41,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
+        if (user.getId() != null) {
+            throw new BadRequestException("User id mast be null");
+        }
         return userRepository.save(user);
+    }
+
+    @Override
+    public User update(User user) {
+        if (user.getId() == null || user.getId() <= 0) {
+            throw new BadRequestException("Missing user id");
+        }
+        return this.save(user);
     }
 
     @Override

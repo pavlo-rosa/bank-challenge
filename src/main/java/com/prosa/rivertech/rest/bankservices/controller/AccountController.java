@@ -65,7 +65,7 @@ public class AccountController {
         return ResponseEntity.created(location).build();
     }
 
-//    Disabled --> Only make sense for change password and this is not covered for the test
+//    Disabled --> Only make sense for change password and this is not covered for the test --> no continue
 //    @PutMapping("/users/{userId}/accounts")
 //    public ResponseEntity<AccountDto> updateAccount(@PathVariable Long userId, @RequestBody Account account) {
 //        User user = userService.findById(userId);

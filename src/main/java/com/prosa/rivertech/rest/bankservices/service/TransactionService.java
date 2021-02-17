@@ -14,6 +14,6 @@ public interface TransactionService {
 
     public Transaction addWithdrawal(Long accountId, BigDecimal amount, String authorization);
 
-    public Transference addTransference(Long sourceAccountId, Long destinationAccountId, BigDecimal amount, String authorization);
+    public Transaction addTransference(Long sourceAccountId, Long destinationAccountId, BigDecimal amount, String authorization);
 
 }

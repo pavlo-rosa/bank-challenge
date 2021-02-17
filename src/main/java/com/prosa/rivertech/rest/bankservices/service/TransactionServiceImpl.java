@@ -14,8 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -38,7 +41,10 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public List<Transaction> findAllByAccountId(Long accountId) {
         Account account = accountService.findById(accountId);
-        return account.getTransactions();
+        return account.getTransactions()
+                .stream()
+                .sorted((o1, o2) -> o2.getId().compareTo(o1.getId())
+                ).collect(Collectors.toList());
     }
 
     @Transactional
@@ -68,7 +74,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Transactional
     @Override
-    public Transference addTransference(Long sourceAccountId, Long destinationAccountId, BigDecimal amount, String authorization) {
+    public Transaction addTransference(Long sourceAccountId, Long destinationAccountId, BigDecimal amount, String authorization) {
         Account sourceAccount = accountService.findById(sourceAccountId);
         boolean authorized = authorizationManager.validateUser(authorization, sourceAccount);
         if (!authorized) {
@@ -77,14 +83,17 @@ public class TransactionServiceImpl implements TransactionService {
         if (sourceAccount.getBalance().compareTo(amount) < 0) {
             throw new UnauthorizedException("Insufficient balance");
         }
-
+        Transaction receiptTransactionOrigin = null;
         Operation operation = operationService.findById(EnumOperationType.TRANSFER.getId());
         Account destinationAccount = accountService.findById(destinationAccountId);
         Transference newTransference = new Transference(sourceAccount, destinationAccount, amount, operation);
+
         newTransference = transferenceRepository.save(newTransference);
-        createTransaction(sourceAccount, amount.negate(), operation, newTransference);
+        receiptTransactionOrigin = createTransaction(sourceAccount, amount.negate(), operation, newTransference);
         createTransaction(destinationAccount, amount, operation, newTransference);
-        return newTransference;
+
+        //We return a kind or receive from sourceAccount to show the success of the operation
+        return receiptTransactionOrigin;
     }
 
     private Transaction createTransaction(Account account, BigDecimal amount, Operation operation, Transference transference) {

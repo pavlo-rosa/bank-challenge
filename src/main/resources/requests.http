@@ -1,6 +1,12 @@
-#######################################################################
-##################         CRUD  - USER      ###################
-#######################################################################
+
+#####################
+### CALL EXAMPLES ###
+#####################
+
+
+## TO TEST THE WHOLE API - IMPORT Bank-Service-PavloRosa.postman_collection.json TO POSTMAN
+############################################################################################
+
 
 ### Retrieve All Users
 GET http://localhost:8080/api/users
@@ -18,3 +24,4 @@ Content-Type: application/json
 {
   "name": "Cersei"
 }
+

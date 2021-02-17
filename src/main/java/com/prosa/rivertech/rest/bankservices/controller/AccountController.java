@@ -1,5 +1,6 @@
 package com.prosa.rivertech.rest.bankservices.controller;
 
+import com.prosa.rivertech.rest.bankservices.config.SwaggerConfig;
 import com.prosa.rivertech.rest.bankservices.dto.AccountCreateRequest;
 import com.prosa.rivertech.rest.bankservices.dto.AccountDto;
 import com.prosa.rivertech.rest.bankservices.entity.Account;
@@ -7,6 +8,8 @@ import com.prosa.rivertech.rest.bankservices.entity.User;
 import com.prosa.rivertech.rest.bankservices.mapper.AccountMapper;
 import com.prosa.rivertech.rest.bankservices.service.AccountService;
 import com.prosa.rivertech.rest.bankservices.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Api(tags = { SwaggerConfig.TAG_ACCOUNT })
 @RestController
 public class AccountController {
     private final AccountService accountService;
@@ -32,6 +36,7 @@ public class AccountController {
     }
 
     @GetMapping("/accounts")
+    @ApiOperation(value = "Retrieve all bank accounts")
     public ResponseEntity<List<AccountDto>> retrieveAllAccounts() {
         List<Account> accounts = accountService.findAll();
         return ResponseEntity
@@ -41,6 +46,7 @@ public class AccountController {
 
 
     @GetMapping("/accounts/{id}")
+    @ApiOperation(value = "Retrieve an account information by id")
     public ResponseEntity<AccountDto> retrieveAccountById(@PathVariable long id) {
         Account account = accountService.findById(id);
         return ResponseEntity
@@ -50,6 +56,7 @@ public class AccountController {
 
 
     @GetMapping("/users/{userId}/accounts")
+    @ApiOperation(value = "Retrieve all accounts from a client")
     public ResponseEntity<List<AccountDto>> retrieveAccountsByUser(@PathVariable Long userId) {
         User user = userService.findById(userId);
         return ResponseEntity
@@ -58,6 +65,7 @@ public class AccountController {
     }
 
     @PostMapping("/users/{userId}/accounts")
+    @ApiOperation(value = "Create a new account for an existing client")
     public ResponseEntity<Object> addAccount(@PathVariable Long userId, @Valid @RequestBody AccountCreateRequest accountCreateRequest) {
         User user = userService.findById(userId);
         Account newAccount = accountService.createAccount(user, accountCreateRequest.getPassword());
@@ -77,6 +85,7 @@ public class AccountController {
 //    }
 
     @DeleteMapping("/accounts/{id}")
+    @ApiOperation(value = "Create an existing account")
     public ResponseEntity<String> deleteAccount(@PathVariable Long id) {
         accountService.delete(id);
         return ResponseEntity

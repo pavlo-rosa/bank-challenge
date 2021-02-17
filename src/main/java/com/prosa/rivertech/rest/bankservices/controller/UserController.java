@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
-    private UserService userService;
-    private UserMapper userMapper;
+    private final UserService userService;
+    private final UserMapper userMapper;
 
     @Autowired
     public UserController(UserService userService, UserMapper userMapper) {

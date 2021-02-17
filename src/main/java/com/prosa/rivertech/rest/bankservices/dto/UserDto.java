@@ -17,6 +17,10 @@ public class UserDto {
         this.name = name;
     }
 
+    public UserDto(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }
@@ -31,5 +35,13 @@ public class UserDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

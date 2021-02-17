@@ -1,6 +1,7 @@
 package com.prosa.rivertech.rest.bankservices.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -28,6 +29,12 @@ public class User extends Auditable {
     public User(String name) {
         this.name = name;
     }
+
+    public User(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
 
     @Override
     public String toString() {

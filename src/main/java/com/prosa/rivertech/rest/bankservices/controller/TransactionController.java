@@ -39,9 +39,8 @@ public class TransactionController {
 
     @PostMapping("/accounts/{accountId}/transactions/deposits")
     public ResponseEntity<TransactionDto> createDeposit(@PathVariable Long accountId,
-                                             @Valid @RequestBody TransactionDepositOperationRequest body,
-                                             @RequestHeader("Authorization") String authorization) {
-        Transaction newTransaction = transactionService.addDeposit(accountId, body.getAmount(), authorization);
+                                             @Valid @RequestBody TransactionDepositOperationRequest body) {
+        Transaction newTransaction = transactionService.addDeposit(accountId, body.getAmount());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(transactionMapper.mapToDto(newTransaction));

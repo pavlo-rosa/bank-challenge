@@ -49,7 +49,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Transactional
     @Override
-    public Transaction addDeposit(Long accountId, BigDecimal amount, String authorization) {
+    public Transaction addDeposit(Long accountId, BigDecimal amount) {
         Account account = accountService.findById(accountId);
         Operation operation = operationService.findById(EnumOperationType.DEPOSIT.getId());
         return createTransaction(account, amount, operation, null);

@@ -1,17 +1,12 @@
 package com.prosa.rivertech.rest.bankservices.service;
 
 import com.prosa.rivertech.rest.bankservices.entity.Account;
-import com.prosa.rivertech.rest.bankservices.entity.Account;
+import com.prosa.rivertech.rest.bankservices.entity.User;
 import com.prosa.rivertech.rest.bankservices.exception.NotFoundException;
-import com.prosa.rivertech.rest.bankservices.repository.AccountRepository;
 import com.prosa.rivertech.rest.bankservices.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import sun.security.util.Password;
-
-import java.security.SecureRandom;
-import java.sql.Timestamp;
 import java.util.*;
 
 @Service
@@ -42,11 +37,22 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account save(Account account) {
-        String encodedPassword = new BCryptPasswordEncoder().encode(account.getPassword());
-        account.setPassword(encodedPassword);
-        return accountRepository.save(account);
+    public Account createAccount(User user, String password) {
+        String encodedPassword = new BCryptPasswordEncoder().encode(password);
+        Account newAccount = new Account(user, encodedPassword);
+        return accountRepository.save(newAccount);
     }
+
+//    Disabled
+//    @Override
+//    public Account update(Account account) {
+//        if (account.getId() == null || account.getId() <= 0) {
+//            throw new BadRequestException("Missing user id");
+//        }
+//        String encodedPassword = new BCryptPasswordEncoder().encode(account.getPassword());
+//        account.setPassword(encodedPassword);
+//        return accountRepository.save(account);
+//    }
 
     @Override
     public void delete(Long id) {

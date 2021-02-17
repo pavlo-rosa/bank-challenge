@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,9 +44,9 @@ public class UserController {
 
     @PostMapping("/users")
     public ResponseEntity<UserDto> addUser(@Valid @RequestBody UserDto userDto) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(userMapper.mapToDto(userService.save(userMapper.map(userDto))));
+        User newUser = userService.save(userMapper.map(userDto));
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userId}").buildAndExpand(newUser.getId()).toUri();
+        return ResponseEntity.created(location).build();
     }
 
     @PutMapping("/users")

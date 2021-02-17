@@ -1,6 +1,7 @@
 package com.prosa.rivertech.rest.bankservices.service;
 
 import com.prosa.rivertech.rest.bankservices.entity.Account;
+import com.prosa.rivertech.rest.bankservices.entity.User;
 
 import java.util.List;
 
@@ -10,7 +11,10 @@ public interface AccountService {
 
     public Account findById(Long id);
 
-    public Account save (Account account);
+    public Account createAccount(User user, String password);
+
+//    Disabled
+//    public Account update (Account account);
 
     public void delete(Long id);
 }

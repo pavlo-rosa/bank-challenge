@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
         if (user.getId() == null || user.getId() <= 0) {
             throw new BadRequestException("Missing user id");
         }
-        return this.save(user);
+        return userRepository.save(user);
     }
 
     @Override

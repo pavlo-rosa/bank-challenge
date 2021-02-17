@@ -13,7 +13,7 @@ public interface UserMapper {
 
 //    @Mapping(source = "id", target = "id")
 //    @Mapping(source = "name", target = "name")
-    User map(UserDto user);
+    User map(UserDto userDto);
 
 //    @Mapping(source = "id", target = "id")
 //    @Mapping(source = "name", target = "name")

@@ -18,16 +18,14 @@ public class Account  extends Auditable {
     @Column(name = "number", unique = true)
     private String number;
 
-    //TODO: Pin 4 digits
     @Column(name = "password")
     private String password;
-
 
     @ManyToOne()
     private User owner;
 
-    @Column(name = "balance")
-    private BigDecimal balance;
+    @Column(name = "balance", columnDefinition = "NUMERIC(19,2) DEFAULT 0 NOT NULL")
+    private BigDecimal balance = new BigDecimal(0);
 
     @OneToMany(mappedBy = "sourceAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Transference> transferencesEmitted;
@@ -41,11 +39,9 @@ public class Account  extends Auditable {
     public Account() {
     }
 
-    public Account(String number, String password, User owner, BigDecimal balance) {
-        this.number = number;
+    public Account(User owner, String password) {
         this.password = password;
         this.owner = owner;
-        this.balance = balance;
     }
 
     @Override

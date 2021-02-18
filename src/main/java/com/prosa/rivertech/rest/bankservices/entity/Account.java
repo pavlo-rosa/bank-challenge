@@ -39,9 +39,10 @@ public class Account  extends Auditable {
     public Account() {
     }
 
-    public Account(User owner, String password) {
+    public Account(User owner, String password, String number) {
         this.password = password;
         this.owner = owner;
+        this.number = number;
     }
 
     @Override

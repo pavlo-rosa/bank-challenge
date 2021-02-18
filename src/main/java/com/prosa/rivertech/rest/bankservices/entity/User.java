@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-@Table(name = "\"user\"")
+@Table(name = "client")
 @JsonIgnoreProperties(value = {"accounts", "createdDate", "updatedDate"})
 public class User extends Auditable {
 

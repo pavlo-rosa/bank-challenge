@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -45,10 +46,10 @@ public class AccountController {
     }
 
 
-    @GetMapping("/accounts/{id}")
+    @GetMapping("/accounts/{accountId}")
     @ApiOperation(value = "Retrieve an account information by id")
-    public ResponseEntity<AccountDto> retrieveAccountById(@PathVariable long id) {
-        Account account = accountService.findById(id);
+    public ResponseEntity<AccountDto> retrieveAccountById(@PathVariable long accountId) {
+        Account account = accountService.findById(accountId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(accountMapper.mapToDto(account));
@@ -84,12 +85,13 @@ public class AccountController {
 //                .body(accountMapper.mapToDto(newAccount));
 //    }
 
-    @DeleteMapping("/accounts/{id}")
+    @DeleteMapping("/accounts/{accountId}")
     @ApiOperation(value = "Create an existing account")
-    public ResponseEntity<String> deleteAccount(@PathVariable Long id) {
-        accountService.delete(id);
+    public ResponseEntity<String> deleteAccount(@PathVariable Long accountId) {
+        accountService.delete(accountId);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body("Deleted account id: " + id);
+                .contentType(MediaType.TEXT_PLAIN)
+                .body("Deleted account id: " + accountId);
     }
 }

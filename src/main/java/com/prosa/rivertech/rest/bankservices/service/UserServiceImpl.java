@@ -41,10 +41,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        if (user.getId() != null) {
-            throw new BadRequestException("User id mast be null");
+        if (user.getId() == null || user.getId() == 0) {
+            return userRepository.save(user);
+        } else {
+            throw new BadRequestException("User id must be null or zero");
         }
-        return userRepository.save(user);
     }
 
     @Override

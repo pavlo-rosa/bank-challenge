@@ -9,6 +9,7 @@ import com.prosa.rivertech.rest.bankservices.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,17 +41,17 @@ public class UserController {
                 .body(users.stream().map(user -> userMapper.mapToDto(user)).collect(Collectors.toList()));
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/users/{userId}")
     @ApiOperation(value = "Retrieve client by id")
-    public ResponseEntity<UserDto> retrieveUserById(@PathVariable long id) {
+    public ResponseEntity<UserDto> retrieveUserById(@PathVariable long userId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userMapper.mapToDto(userService.findById(id)));
+                .body(userMapper.mapToDto(userService.findById(userId)));
     }
 
     @PostMapping("/users")
     @ApiOperation(value = "Create new client")
-    public ResponseEntity<UserDto> addUser(@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<Object> addUser(@Valid @RequestBody UserDto userDto) {
         User newUser = userService.save(userMapper.map(userDto));
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userId}").buildAndExpand(newUser.getId()).toUri();
         return ResponseEntity.created(location).build();
@@ -64,12 +65,13 @@ public class UserController {
                 .body(userMapper.mapToDto(userService.update(userMapper.map(userDto))));
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/users/{userId}")
     @ApiOperation(value = "Delete client by ID")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        userService.delete(id);
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
+        userService.delete(userId);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body("Deleted user id: " + id);
+                .contentType(MediaType.TEXT_PLAIN)
+                .body("Deleted user id: " + userId);
     }
 }

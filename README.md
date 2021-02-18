@@ -1,14 +1,14 @@
-# River Tech Bank
-# Introduction
+#River Tech Bank
+##Introduction
 Welcome to the new banking services offered by River Tech developed by Pavlo Rosa with ♥. 
 
 The goal of this project is to design and implement a RESTful API, backing service and data model to create bank accounts and transfer money between them. Interaction with API will be using HTTP requests.
 
-## Installation
+##Installation
 This is a [Spring boot](https://spring.io/projects/spring-boot) project using Maven and Java 8.
 Make sure you have these tools installed in order to continue.
 
-## Quick Start
+##Quick Start
 Before running the program make sure you have the dependencies installed. You can use the following command:
 ```bash
 mvn install
@@ -21,14 +21,14 @@ mvn spring-boot:run
 
 **NOTE: The database is temporary in memory. Each time you run the program the database is created and destroyed.**
 
-## Features
+##Features
 * CRUD bank clients 
 * Management accounts
 * Create and check transactions
 
-## Design
+##Design
 
-### Database
+###Database
 ![DataBase design](https://prv-projects.s3-eu-west-1.amazonaws.com/databaseDesign.png)
 * All the tables have created and updated dates. Useful for futures features.
 * The list of operations are saved in the database to be able to restrict the type of operations form the database itself.
@@ -43,7 +43,7 @@ mvn spring-boot:run
       To obtain the balance of an account we could make a query looking for that last transaction and in case of not finding it put as 0. However, transaction.balance is considered as the historical balance and account.balance is considered as the current balance. Besides, the transaction table will grow very fast, and consulting the balance of an account is something very frequent.
       The user will be interested in seeing his last transactions, not all of them, therefore, in this way, the information is more accessible and the attributes are differentiated.
       
-### Structure
+###Structure
 The project has been developed as a singleton MVC backend.
 - **/src/ .. /**
     - **java/ ..packages../**
@@ -63,36 +63,57 @@ The project has been developed as a singleton MVC backend.
       - **requests.http** : Some call examples (no important).
 * **/test/** : This replicates the structure of src, and it is where the tests are located.
 
-### URL Design
-The solution provides a context path. This context path is:'
-```
-{host}/api/ //in postman the local variable {{host}} = 
-http://localhost:8080/api
-```
+###URL Design
+The solution provides a context path. This context path is:`
+{host}/api/` In postman the local variable host have the value `{{host}} = 
+http://localhost:8080/api`
+
 The bank clients are users:
 ```
-GET     {{host}}/users/
-GET     {{host}}/users/{userId}
-POST    {{host}}/users/
-PUT     {{host}}/users/
+GET       {{host}}/users/
+GET       {{host}}/users/{userId}
+DELETE    {{host}}/users/{userId}
+POST      {{host}}/users/
+PUT       {{host}}/users/
 ```
 When the user wants to view all their accounts information or create a new account: 
 ```
-GET     {{host}}/users/{userId}/accounts
-POST    {{host}}/users/{userId}/accounts
+GET       {{host}}/users/{userId}/accounts
+POST      {{host}}/users/{userId}/accounts
 ```
 The rest of the account operations, it will not be taken from the user's base, it will be taken from the account itself. Why?
 1. The main entity of the service is the account. The account is depends on the user, but it is the account that is important.
 2. Avoid redundant queries.
 3. Easier to read.
 ```
-        //Have to unnecessarily corroborate userId with the account
-GET     {{host}}/users/{userId}/accounts/{accountId}/transactions  // NO
-POST    {{host}}/accounts/{accountId}/transactions  // YES
+          //Have to unnecessarily corroborate userId with the account
+GET       {{host}}/users/{userId}/accounts/{accountId}/transactions  // NO
+GET       {{host}}/accounts/{accountId}/transactions  // YES
 ```
 These URLs are:
 ```
-POST    {{host}}/accounts/{accountId}/transactions 
-POST    {{host}}/accounts/{accountId}/transactions 
-
+GET       {{host}}/accounts/
+GET       {{host}}/accounts/{accountId}
+DELETE    {{host}}/accounts/{accountId}
+GET       {{host}}/accounts/{accountId}/transactions 
+POST      {{host}}/accounts/{accountId}/transactions/deposits 
+POST      {{host}}/accounts/{accountId}/transactions/withdrawals    //AUTHORIZATION REQUIRED
+POST      {{host}}/accounts/{accountId}/transactions/transferences  //AUTHORIZATION REQUIRED
 ```
+When the authorization is required, the user have to introduce their account number and password. **The type of authorization is Basic Auth.**
+
+You can introduce the information using Postman or adding in your header request `Authorization: Basic <password generated>`. Generate your password [here](https://www.blitter.se/utils/basic-authentication-header-generator/).
+
+More information about the API can be provided in:
+```
+../api/swagger-ui/index.html
+                                //or
+../api/v2/api-docs
+```
+###Thank you
+Thank you for reading and take time to evaluate my candidature.
+Please feel free to contact me if you have any question. 
+
+Any feedback about my solution is welcome ;)
+
+Pavlo Rosa

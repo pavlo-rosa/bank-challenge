@@ -8,10 +8,17 @@ public class AccountDto {
 
     private Long id;
     private String number;
-    private User owner;
+    private UserDto owner;
     private BigDecimal balance;
 
     public AccountDto() {
+    }
+
+    public AccountDto(Long id, String number, UserDto owner, BigDecimal balance) {
+        this.id = id;
+        this.number = number;
+        this.owner = owner;
+        this.balance = balance;
     }
 
     public Long getId() {
@@ -30,11 +37,11 @@ public class AccountDto {
         this.number = number;
     }
 
-    public User getOwner() {
+    public UserDto getOwner() {
         return owner;
     }
 
-    public void setOwner(User owner) {
+    public void setOwner(UserDto owner) {
         this.owner = owner;
     }
 

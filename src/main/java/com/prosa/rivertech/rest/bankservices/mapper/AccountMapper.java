@@ -13,8 +13,9 @@ public interface AccountMapper {
 
     AccountMapper INSTANCE = Mappers.getMapper( AccountMapper.class );
 
-    @Mapping(target = "password", ignore = true)
-    Account map(AccountDto accountDto);
+//    No usages
+//    @Mapping(target = "password", ignore = true)
+//    Account map(AccountDto accountDto);
 
     AccountDto mapToDto(Account account);
 }

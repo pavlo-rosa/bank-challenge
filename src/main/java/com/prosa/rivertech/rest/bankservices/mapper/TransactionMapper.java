@@ -14,12 +14,13 @@ public interface TransactionMapper {
 
     TransactionMapper INSTANCE = Mappers.getMapper( TransactionMapper.class );
 
-    @Mapping(source = "transactionDto.id", target = "id")
-    @Mapping(source = "transactionDto.amount", target = "amount")
-    @Mapping(source = "transactionDto.balance", target = "balance")
-    @Mapping(source = "operation.id", target = "operation.id")
-    @Mapping(source = "operation.name", target = "operation.name")
-    Transaction map(TransactionDto transactionDto, Operation operation);
+//    No usages
+//    @Mapping(source = "transactionDto.id", target = "id")
+//    @Mapping(source = "transactionDto.amount", target = "amount")
+//    @Mapping(source = "transactionDto.balance", target = "balance")
+//    @Mapping(source = "operation.id", target = "operation.id")
+//    @Mapping(source = "operation.name", target = "operation.name")
+//    Transaction map(TransactionDto transactionDto, Operation operation);
 
     @Mapping(source = "transaction.id", target = "id")
     @Mapping(source = "transaction.amount", target = "amount")

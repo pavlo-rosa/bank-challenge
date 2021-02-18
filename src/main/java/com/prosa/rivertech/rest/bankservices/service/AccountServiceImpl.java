@@ -49,6 +49,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     //3-random-digits + timestamp
+    //Generate number without collision.
     private String generateNumberAccount() {
         long timestamp = new Date().getTime();
         //Extra random numbers

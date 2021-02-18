@@ -62,7 +62,8 @@ VALUES (1040.00, 1050.00, 1, 3, 2);
 ----------------------------------------------
 --      ONLY AVAILABLE USING POSTGRESQL     --
 ----------------------------------------------
---
+-- Replaced by AccountServiceImpl.generateNumberAccount() --> (Different algorithms)
+----------------------------------------------------------------------
 -- CREATE OR REPLACE FUNCTION pseudo_encrypt(value INT) RETURNS INT AS
 -- '
 --     DECLARE

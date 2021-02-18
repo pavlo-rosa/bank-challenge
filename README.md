@@ -110,6 +110,11 @@ More information about the API can be provided in:
                                 //or
 ../api/v2/api-docs
 ```
+### Additional Information
+The solution uses the [H2 Database](https://www.h2database.com/html/main.html). The console is enabled. 
+
+For checking the tables of the database is available in the url `.../api/h2-console` (Run server is required).
+
 ### Thank you
 Thank you for reading and take time to evaluate my candidature.
 Please feel free to contact me if you have any question. 

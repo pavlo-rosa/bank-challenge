@@ -4,23 +4,23 @@ import com.prosa.rivertech.rest.bankservices.entity.Account;
 import com.prosa.rivertech.rest.bankservices.entity.User;
 import com.prosa.rivertech.rest.bankservices.exception.NotFoundException;
 import com.prosa.rivertech.rest.bankservices.repository.AccountRepository;
+import com.prosa.rivertech.rest.bankservices.utils.GeneratorAccountsNumberManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.SecureRandom;
 import java.util.*;
 
 @Service
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
+    private final GeneratorAccountsNumberManager generatorAccountsNumberManager;
 
     @Autowired
-    public AccountServiceImpl(AccountRepository accountRepository) {
+    public AccountServiceImpl(AccountRepository accountRepository, GeneratorAccountsNumberManager generatorAccountsNumberManager) {
         this.accountRepository = accountRepository;
+        this.generatorAccountsNumberManager = generatorAccountsNumberManager;
     }
 
     @Override
@@ -43,30 +43,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account createAccount(User user, String password) {
         String encodedPassword = new BCryptPasswordEncoder().encode(password);
-        String newNumberAccount = generateNumberAccount();
+        String newNumberAccount = generatorAccountsNumberManager.generateNumber();
         Account newAccount = new Account(user, encodedPassword, newNumberAccount);
         return accountRepository.save(newAccount);
     }
-
-    //3-random-digits + timestamp
-    //Generate number without collision.
-    private String generateNumberAccount() {
-        long timestamp = new Date().getTime();
-        //Extra random numbers
-        int min = 100;
-        int max = 999;
-        try {
-            SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
-            byte[] randomBytes = new byte[64];
-            random.nextBytes(randomBytes);
-            int randInRange = random.nextInt((max - min) + 1) + min;
-            return randInRange +Long.toString(timestamp);
-        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Internal Error");
-        }
-    }
-
 
 //    Disabled
 //    @Override

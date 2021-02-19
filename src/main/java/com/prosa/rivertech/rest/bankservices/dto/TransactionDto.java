@@ -16,6 +16,13 @@ public class TransactionDto {
     public TransactionDto() {
     }
 
+    public TransactionDto(Long id, String operation, BigDecimal amount, BigDecimal balance) {
+        this.id = id;
+        this.operation = operation;
+        this.amount = amount;
+        this.balance = balance;
+    }
+
     public Long getId() {
         return id;
     }

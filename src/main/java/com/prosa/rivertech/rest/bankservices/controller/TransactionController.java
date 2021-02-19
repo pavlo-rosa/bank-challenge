@@ -43,7 +43,7 @@ public class TransactionController {
     }
 
     @PostMapping("/accounts/{accountId}/transactions/deposits")
-    @ApiOperation(value = "Make a deposit to account")
+    @ApiOperation(value = "Do a deposit to account")
     public ResponseEntity<TransactionDto> createDeposit(@PathVariable Long accountId,
                                              @Valid @RequestBody TransactionDepositOperationRequest body) {
         Transaction newTransaction = transactionService.addDeposit(accountId, body.getAmount());
@@ -53,7 +53,7 @@ public class TransactionController {
     }
 
     @PostMapping("/accounts/{accountId}/transactions/withdrawals")
-    @ApiOperation(value = "Make a withdrawal from account")
+    @ApiOperation(value = "Do a withdrawal from account")
     public ResponseEntity<TransactionDto> createWithdrawal(@PathVariable Long accountId,
                                                 @Valid @RequestBody TransactionWithdrawalOperationRequest body,
                                                 @RequestHeader("Authorization") String authorization) {
@@ -64,7 +64,7 @@ public class TransactionController {
     }
 
     @PostMapping("/accounts/{accountId}/transactions/transferences")
-    @ApiOperation(value = "Make a transference from one account to another")
+    @ApiOperation(value = "Do a transference from one account to another")
     public ResponseEntity<TransactionDto> createTransference(@PathVariable Long accountId,
                                                   @Valid @RequestBody TransferenceOperationRequest body,
                                                   @RequestHeader("Authorization") String authorization) {

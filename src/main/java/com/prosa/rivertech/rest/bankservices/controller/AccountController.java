@@ -68,8 +68,7 @@ public class AccountController {
     @PostMapping("/users/{userId}/accounts")
     @ApiOperation(value = "Create a new account for an existing client")
     public ResponseEntity<Object> addAccount(@PathVariable Long userId, @Valid @RequestBody AccountCreateRequest accountCreateRequest) {
-        User user = userService.findById(userId);
-        Account newAccount = accountService.createAccount(user, accountCreateRequest.getPassword());
+        Account newAccount = accountService.createAccount(userId, accountCreateRequest.getPassword());
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/accounts/{accountId}").buildAndExpand(newAccount.getId()).toUri();
         return ResponseEntity.created(location).build();
     }

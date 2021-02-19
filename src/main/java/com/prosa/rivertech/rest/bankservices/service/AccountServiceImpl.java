@@ -2,6 +2,7 @@ package com.prosa.rivertech.rest.bankservices.service;
 
 import com.prosa.rivertech.rest.bankservices.entity.Account;
 import com.prosa.rivertech.rest.bankservices.entity.User;
+import com.prosa.rivertech.rest.bankservices.exception.BadRequestException;
 import com.prosa.rivertech.rest.bankservices.exception.NotFoundException;
 import com.prosa.rivertech.rest.bankservices.repository.AccountRepository;
 import com.prosa.rivertech.rest.bankservices.utils.GeneratorAccountsNumberManager;
@@ -15,12 +16,14 @@ import java.util.*;
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
+    private final UserService userService;
     private final GeneratorAccountsNumberManager generatorAccountsNumberManager;
 
     @Autowired
-    public AccountServiceImpl(AccountRepository accountRepository, GeneratorAccountsNumberManager generatorAccountsNumberManager) {
+    public AccountServiceImpl(AccountRepository accountRepository, GeneratorAccountsNumberManager generatorAccountsNumberManager, UserService userService) {
         this.accountRepository = accountRepository;
         this.generatorAccountsNumberManager = generatorAccountsNumberManager;
+        this.userService = userService;
     }
 
     @Override
@@ -41,7 +44,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account createAccount(User user, String password) {
+    public Account createAccount(Long userId, String password) {
+        if(password == null || password.isEmpty()){
+            throw new BadRequestException("Invalid request");
+        }
+        User user = userService.findById(userId);
         String encodedPassword = new BCryptPasswordEncoder().encode(password);
         String newNumberAccount = generatorAccountsNumberManager.generateNumber();
         Account newAccount = new Account(user, encodedPassword, newNumberAccount);

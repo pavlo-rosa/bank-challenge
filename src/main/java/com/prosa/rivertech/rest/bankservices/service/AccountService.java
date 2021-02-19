@@ -11,7 +11,7 @@ public interface AccountService {
 
     public Account findById(Long id);
 
-    public Account createAccount(User user, String password);
+    public Account createAccount(Long userId, String password);
 
 //    Disabled
 //    public Account update (Account account);

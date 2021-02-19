@@ -23,7 +23,7 @@ public class OperationServiceImpl implements OperationService {
     public Operation findById(int id) {
         Optional<Operation> result = operationRepository.findById(id);
         if (!result.isPresent()) {
-            throw new NotFoundException("User id not found - " + id);
+            throw new NotFoundException("Operation id not found - " + id);
         }
         return result.get();
     }

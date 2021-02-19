@@ -85,7 +85,7 @@ class AccountServiceTest {
     }
 
     @Test
-    void findById_NotFoundAccount() {
+    void findById_AccountNotFound() {
 
         when(accountRepository.findById(1L)).thenReturn(Optional.empty());
 

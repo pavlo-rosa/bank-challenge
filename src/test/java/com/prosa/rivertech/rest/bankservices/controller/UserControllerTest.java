@@ -9,17 +9,22 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,10 +33,8 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UserController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -48,102 +51,98 @@ class UserControllerTest {
 
     @Test
     void retrieveAllUsers_Basic() throws Exception {
-        when(userService.findAll()).thenReturn(
-                Arrays.asList(
-                        new User(1L, "Homer"),
-                        new User(2L, "Bart"),
-                        new User(3L, "Lisa")
-                )
-        );
 
-        List<User> users = userService.findAll();
-        ;
+        List<User> users = Arrays.asList( new User(1L, "Bart"),  new User(2L, "Lisa"));
+        UserDto userDto1 = new UserDto(1L, "Bart");
+        UserDto userDto2 = new UserDto(2L, "Lisa");
 
-        when(userMapper.mapToDto(users.get(0))).thenReturn(
-                new UserDto(1L, "Homer")
-        );
-        when(userMapper.mapToDto(users.get(1))).thenReturn(
-                new UserDto(2L, "Bart")
-        );
-        when(userMapper.mapToDto(users.get(2))).thenReturn(
-                new UserDto(3L, "Lisa")
-        );
+        when(userService.findAll()).thenReturn(users);
+        when(userMapper.mapToDto(users.get(0))).thenReturn(userDto1);
+        when(userMapper.mapToDto(users.get(1))).thenReturn(userDto2);
 
-        RequestBuilder request = MockMvcRequestBuilders
-                .get("/users")
-                .accept(MediaType.APPLICATION_JSON);
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonResponse = mapper.writeValueAsString(Arrays.asList(userDto1, userDto2));
 
-        MvcResult result = mockMvc.perform(request)
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/users/", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8")
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{id:1,name:Homer},{id:2,name:Bart},{id:3,name:Lisa}]"))
-                .andReturn();
+                .andExpect(content().string(jsonResponse));
     }
 
     @Test
     void retrieveUserById_Basic() throws Exception {
-        Long idToFind = 1L;
-        when(userService.findById(anyLong())).thenReturn(
-                new User(1L, "Homer")
-        );
+        User user = new User(1L, "Bart");
+        UserDto userDto = new UserDto(1L, "Bart");
 
-        User mockUser = userService.findById(idToFind);
-        when(userMapper.mapToDto(mockUser)).thenReturn(
-                new UserDto(idToFind, "Homer")
-        );
+        when(userService.findById(1L)).thenReturn(user);
+        when(userMapper.mapToDto(user)).thenReturn(userDto);
 
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonResponse = mapper.writeValueAsString(userDto);
 
-        RequestBuilder request = MockMvcRequestBuilders
-                .get("/users/{userID}", idToFind)
-                .accept(MediaType.APPLICATION_JSON);
-
-        MvcResult result = mockMvc.perform(request)
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/users/{1}", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8")
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("{id:1,name:Homer}"))
-                .andReturn();
+                .andExpect(content().string(jsonResponse));
     }
 
     @Test
-    void addUser() throws Exception {
-        User userMock = new User("Mr Burns");
-        UserDto userDtoMock = new UserDto("Mr Burns");
+    void addUser_Basic() throws Exception {
 
-        when(userMapper.map(userDtoMock)).thenReturn(new User("Mr Burns"));
-        when(userService.save(userMock)).thenReturn(new User(1L, "Mr Burns"));
+        when(userMapper.map(any(UserDto.class))).thenReturn(new User("Mr Burns"));
+        when(userService.save(any(User.class))).thenReturn(new User(1L, "Mr Burns"));
 
-        RequestBuilder request = MockMvcRequestBuilders
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonRequest = mapper.writeValueAsString(new UserDto(null, "Mr. Burns"));
+
+        mockMvc.perform(MockMvcRequestBuilders
                 .post("/users")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(jsonRequest)
+                .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
-                .content("{name:\"Mr Burns\"}");
-
-        MvcResult result = mockMvc.perform(request)
-                .andReturn();
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
     }
 
     @Test
-    void updateUser() throws Exception {
-        User userMock = new User(1L, "Mr Burns");
-        UserDto userDtoMock = new UserDto(1L, "Mr Burns");
+    void updateUser_Basic() throws Exception {
+        User user = new User(1L, "Bart");
+        UserDto userDto = new UserDto(1L, "Bart");
 
-        when(userMapper.map(userDtoMock)).thenReturn(new User(1L, "Mr Burns"));
-        when(userService.save(userMock)).thenReturn(new User(1L, "Mr Burns"));
-        RequestBuilder request = MockMvcRequestBuilders
+        when(userMapper.map(any(UserDto.class))).thenReturn(user);
+        when(userService.update(any(User.class))).thenReturn(user);
+        when(userMapper.mapToDto(any(User.class))).thenReturn(userDto);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonRequest = mapper.writeValueAsString(userDto);
+
+        mockMvc.perform(MockMvcRequestBuilders
                 .put("/users")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(jsonRequest)
+                .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
-                .content("{name:\"Mr Burns\"}");
-
-        MvcResult result = mockMvc.perform(request)
-                .andReturn();
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(jsonRequest));
     }
 
     @Test
-    void deleteUser() throws Exception {
-        RequestBuilder request = MockMvcRequestBuilders
-                .delete("/users/userId}", 1L)
-                .accept(MediaType.APPLICATION_JSON);
+    void deleteUser_Basic() throws Exception {
 
-        MvcResult result = mockMvc.perform(request)
-                .andReturn();
+        mockMvc.perform(MockMvcRequestBuilders
+                .delete("/users/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Deleted user id: 1"));
+
+        verify(userService, times(1)).delete(1L);
     }
 }

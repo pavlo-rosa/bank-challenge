@@ -3,7 +3,6 @@ package com.prosa.rivertech.rest.bankservices.controller;
 import com.prosa.rivertech.rest.bankservices.config.SwaggerConfig;
 import com.prosa.rivertech.rest.bankservices.dto.UserDto;
 import com.prosa.rivertech.rest.bankservices.entity.User;
-import com.prosa.rivertech.rest.bankservices.exception.NotFoundException;
 import com.prosa.rivertech.rest.bankservices.mapper.UserMapper;
 import com.prosa.rivertech.rest.bankservices.service.UserService;
 import io.swagger.annotations.Api;

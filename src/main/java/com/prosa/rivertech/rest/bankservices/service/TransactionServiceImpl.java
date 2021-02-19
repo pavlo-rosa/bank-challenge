@@ -78,14 +78,14 @@ public class TransactionServiceImpl implements TransactionService {
         Account sourceAccount = accountService.findById(sourceAccountId);
         boolean authorized = authorizationManager.validateUser(authorization, sourceAccount);
         if (!authorized) {
-            throw new UnauthorizedException("Unauthorized operation");
+            throw new UnauthorizedException("Account number or Password invalid");
         }
         if (sourceAccount.getBalance().compareTo(amount) < 0) {
             throw new UnauthorizedException("Insufficient balance");
         }
         Transaction receiptTransactionOrigin = null;
-        Operation operation = operationService.findById(EnumOperationType.TRANSFER.getId());
         Account destinationAccount = accountService.findById(destinationAccountId);
+        Operation operation = operationService.findById(EnumOperationType.TRANSFER.getId());
         Transference newTransference = new Transference(sourceAccount, destinationAccount, amount, operation);
 
         newTransference = transferenceRepository.save(newTransference);
